@@ -77,5 +77,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = FSM)
 	float attackDelayTime = 2.0f;
 
+
+
 };
 

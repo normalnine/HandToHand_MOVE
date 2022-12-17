@@ -5,6 +5,7 @@
 #include "HandToHand_MOVECharacter.h"
 #include "Enemy.h"
 #include <Kismet/GameplayStatics.h>
+#include "HandToHand_MOVE.h"
 
 // Sets default values for this component's properties
 UEnemyFSM::UEnemyFSM()
@@ -100,7 +101,32 @@ void UEnemyFSM::MoveState()
 }
 
 // 공격 상태
-void UEnemyFSM::AttackState() {}
+void UEnemyFSM::AttackState() 
+{
+	// 목표 : 일정 시간에 한 번씩 공격하고 싶다.
+	// 1. 시간이 흘러야 한다.
+	currentTime += GetWorld()->DeltaTimeSeconds;
+	
+	// 2. 공격 시간이 됐으니까
+	if (currentTime > attackDelayTime)
+	{
+		// 3. 공격하고 싶다.
+		UE_LOG(LogTemp, Warning, TEXT("Attack!!!"));
+
+		// 경과 시간 초기화
+		currentTime = 0;
+	}
+
+	// 목표 : 타깃이 공격 범위를 벗어나면 상태를 이동으로 전환하고 싶다.
+	// 1. 타깃과의 거리가 필요하다.
+	float distance = FVector::Distance(target->GetActorLocation(), me->GetActorLocation());
+
+	// 2. 타깃과의 거리가 공격 범위를 벗어났으니까
+	if (distance > attackRange)
+
+	// 3. 상태를 이동으로 전환하고 싶다.
+	mState = EEnemyState::Move;
+}
 
 // 피격 상태
 void UEnemyFSM::DamageState() {}
