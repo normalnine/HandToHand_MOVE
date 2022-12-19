@@ -35,60 +35,60 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
-	// »óÅÂ º¯¼ö
+	// ìƒíƒœ ë³€ìˆ˜
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSM)
 		EEnemyState mState = EEnemyState::Idle;
 
-	// ´ë±â »óÅÂ
+	// ëŒ€ê¸° ìƒíƒœ
 	void IdleState();
 
-	// ÀÌµ¿ »óÅÂ
+	// ì´ë™ ìƒíƒœ
 	void MoveState();
 
-	// °ø°İ »óÅÂ
+	// ê³µê²© ìƒíƒœ
 	void AttackState();
 
-	// ÇÇ°İ »óÅÂ
+	// í”¼ê²© ìƒíƒœ
 	void DamageState();
 
-	// Á×À½ »óÅÂ
+	// ì£½ìŒ ìƒíƒœ
 	void DieState();
 
-	// ´ë±â ½Ã°£
+	// ëŒ€ê¸° ì‹œê°„
 	UPROPERTY(EditDefaultsOnly, Category = FSM)
 	float idleDelayTime = 2;
 
-	// °æ°ú ½Ã°£
+	// ê²½ê³¼ ì‹œê°„
 	float currentTime = 0;
 
-	// Å¸±ê
+	// íƒ€ê¹ƒ
 	UPROPERTY(VisibleAnywhere, Category = FSM)
 	class AHandToHand_MOVECharacter* target;
 
-	// ¼ÒÀ¯ ¾×ÅÍ
+	// ì†Œìœ  ì•¡í„°
 	UPROPERTY()
 	class AEnemy* me;
 
-	// °ø°İ ¹üÀ§
+	// ê³µê²© ë²”ìœ„
 	UPROPERTY(EditAnywhere, Category=FSM)
 	float attackRange = 150.0f;
 
-	// °ø°İ ´ë±â ½Ã°£ 
+	// ê³µê²© ëŒ€ê¸° ì‹œê°„ 
 	UPROPERTY(EditAnywhere, Category = FSM)
 	float attackDelayTime = 2.0f;
 
-	// ÇÇ°İ ¾Ë¸² ÀÌº¥Æ® ÇÔ¼ö
+	// í”¼ê²© ì•Œë¦¼ ì´ë²¤íŠ¸ í•¨ìˆ˜
 	void OnDamageProcess();
 
-	// Ã¼·Â
+	// ì²´ë ¥
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=FSM)
 	int32 hp = 3;
 
-	// ÇÇ°İ ´ë±â ½Ã°£
+	// í”¼ê²© ëŒ€ê¸° ì‹œê°„
 	UPROPERTY(EditAnywhere, Category=FSM)
 	float damageDelayTime = 2.0f;
 
-	// ¾Æ·¡·Î »ç¶óÁö´Â ¼Óµµ
+	// ì•„ë˜ë¡œ ì‚¬ë¼ì§€ëŠ” ì†ë„
 	UPROPERTY(EditAnywhere, Category=FSM)
 	float dieSpeed = 50.0f;
 };
