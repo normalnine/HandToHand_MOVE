@@ -170,9 +170,9 @@ void UEnemyFSM::OnDamageProcess()
 {
 	// 체력 감소
 	hp--;
- 
+
 	// 만약 체력이 남아있다면
-	if(hp>0)
+	if (hp > 0)
 	{
 		// 상태를 피격으로 전환
 		mState = EEnemyState::Damage;
@@ -186,3 +186,4 @@ void UEnemyFSM::OnDamageProcess()
 		// 캡슐 충돌체 비활성화
 		me->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
+}
