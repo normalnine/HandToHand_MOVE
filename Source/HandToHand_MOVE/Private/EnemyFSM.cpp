@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include <Kismet/GameplayStatics.h>
 #include "HandToHand_MOVE.h"
+#include <Components/CapsuleComponent.h>
 
 // Sets default values for this component's properties
 UEnemyFSM::UEnemyFSM()
@@ -129,7 +130,60 @@ void UEnemyFSM::AttackState()
 }
 
 // 피격 상태
-void UEnemyFSM::DamageState() {}
+void UEnemyFSM::DamageState() 
+{
+	// 1. 시간이 흘렀으니까
+	currentTime += GetWorld()->DeltaTimeSeconds;
+	
+	// 2. 만약 경과 시간이 대기 시간을 초과했다면
+	if (currentTime > damageDelayTime)
+	{
+		// 3. 대기 상태로 전환하고 싶다.
+		mState = EEnemyState::Idle;
+
+		// 경과 시간 초기화
+		currentTime = 0;
+	}
+}
 
 // 죽음 상태
-void UEnemyFSM::DieState() {}
+void UEnemyFSM::DieState() 
+{
+	// 계속 아래로 내려가고 싶다.
+	// 등속운동 공식 P = P0 + vt
+	FVector P0 = me->GetActorLocation();
+	FVector vt = FVector::DownVector * dieSpeed * GetWorld()->DeltaTimeSeconds;
+	FVector P = P0 + vt;
+	me->SetActorLocation(P);
+
+	// 1. 만약 2미터 이상 내려왔다면
+	if (P.Z < -200.0f)
+	{
+		// 2. 제거시킨다.
+		me->Destroy();
+	}
+}
+
+//피격 알림 이벤트 함수
+void UEnemyFSM::OnDamageProcess()
+{
+	// 체력 감소
+	hp--;
+ 
+	// 만약 체력이 남아있다면
+	if(hp>0)
+	{
+		// 상태를 피격으로 전환
+		mState = EEnemyState::Damage;
+	}
+	// 그렇지 않다면
+	else
+	{
+		// 상태를 죽음으로 전환
+		mState = EEnemyState::Die;
+
+		// 캡슐 충돌체 비활성화
+		me->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	me->Destroy();
+}
