@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "EnemyFSM.h"
 #include "EnemyAnim.generated.h"
 
 /**
@@ -14,4 +15,7 @@ class HANDTOHAND_MOVE_API UEnemyAnim : public UAnimInstance
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category=FSM)
+	EEnemyState animState;
 };
