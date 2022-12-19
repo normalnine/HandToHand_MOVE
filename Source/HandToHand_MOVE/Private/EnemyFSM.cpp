@@ -133,3 +133,9 @@ void UEnemyFSM::DamageState() {}
 
 // 죽음 상태
 void UEnemyFSM::DieState() {}
+
+// 피격 알림 이벤트 함수
+void UEnemyFSM::OnDamageProcess()
+{
+	me->Destroy();
+}
