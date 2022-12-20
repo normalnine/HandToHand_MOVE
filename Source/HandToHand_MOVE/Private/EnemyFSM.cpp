@@ -7,6 +7,7 @@
 #include <Kismet/GameplayStatics.h>
 #include "HandToHand_MOVE.h"
 #include <Components/CapsuleComponent.h>
+#include "EnemyAnim.h"
 
 // Sets default values for this component's properties
 UEnemyFSM::UEnemyFSM()
@@ -32,7 +33,9 @@ void UEnemyFSM::BeginPlay()
 
 	// 소유 객체 가져오기
 	me = Cast<AEnemy>(GetOwner());
-	
+
+	// UEnemyAnim* 할당
+	anim = Cast<UEnemyAnim>(me->GetMesh()->GetAnimInstance());	
 }
 
 
@@ -77,6 +80,8 @@ void UEnemyFSM::IdleState()
 
 		// 경과 시간 초기화
 		currentTime = 0;
+
+		anim->animState = mState;
 	}
 }
 
@@ -98,6 +103,15 @@ void UEnemyFSM::MoveState()
 	{
 		// 2. 공격 상태로 전환하고 싶다.
 		mState = EEnemyState::Attack;
+
+		// 애니메이션 상태 동기화
+		anim->animState = mState;
+
+		// 공격 애니메이션 재생 활성화
+		anim->bAttackPlay = true;
+
+		// 공격 상태 전환 시 대기 시간이 바로 끝나도록 처리
+		currentTime = attackDelayTime;
 	}
 }
 
@@ -116,6 +130,7 @@ void UEnemyFSM::AttackState()
 
 		// 경과 시간 초기화
 		currentTime = 0;
+		anim->bAttackPlay = true;
 	}
 
 	// 목표 : 타깃이 공격 범위를 벗어나면 상태를 이동으로 전환하고 싶다.
@@ -123,10 +138,14 @@ void UEnemyFSM::AttackState()
 	float distance = FVector::Distance(target->GetActorLocation(), me->GetActorLocation());
 
 	// 2. 타깃과의 거리가 공격 범위를 벗어났으니까
-	if (distance > attackRange)
+	if (distance > attackRange) 
+	{
+		// 3. 상태를 이동으로 전환하고 싶다.
+		mState = EEnemyState::Move;
 
-	// 3. 상태를 이동으로 전환하고 싶다.
-	mState = EEnemyState::Move;
+		// 애니메이션 상태 동기화
+		anim->animState = mState;
+	}
 }
 
 // 피격 상태
@@ -143,6 +162,9 @@ void UEnemyFSM::DamageState()
 
 		// 경과 시간 초기화
 		currentTime = 0;
+
+		// 애니메이션 상태 동기화
+		anim->animState = mState;
 	}
 }
 
@@ -176,6 +198,13 @@ void UEnemyFSM::OnDamageProcess()
 	{
 		// 상태를 피격으로 전환
 		mState = EEnemyState::Damage;
+
+		currentTime = 0;
+
+		// 피격 애니메이션 재생
+		int32 index = FMath::RandRange(0, 1);
+		FString sectionName = FString::Printf(TEXT("Damage%d"), 0);
+		anim->PlayDamageAnim(FName(*sectionName));
 	}
 	// 그렇지 않다면
 	else
@@ -186,4 +215,7 @@ void UEnemyFSM::OnDamageProcess()
 		// 캡슐 충돌체 비활성화
 		me->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
+
+	// 애니메이션 상태 동기화
+	anim->animState = mState;
 }
