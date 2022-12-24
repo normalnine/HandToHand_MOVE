@@ -31,4 +31,8 @@ public:
 	// 피격 애니메이션 재생 함수
 	UFUNCTION(BlueprintImplementableEvent, Category=FSMEvent)
 	void PlayDamageAnim(FName sectionName);
+
+	// 죽음 상태 애니메이션 종료 여부
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category=FSM)
+	bool bDieDone = false;
 };

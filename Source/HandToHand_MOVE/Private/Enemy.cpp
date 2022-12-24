@@ -27,20 +27,21 @@ AEnemy::AEnemy()
 		GetMesh()->SetAnimInstanceClass(tempClass.Class);
 	}
 
+	// 월드에 배치되거나 스폰될 때 자동으로
+	// AIController 부터 Process 될 수 있도록 설정
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 // Called when the game starts or when spawned
 void AEnemy::BeginPlay()
 {
-	Super::BeginPlay();
-	
+	Super::BeginPlay();	
 }
 
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-
+	Super::Tick(DeltaTime);	
 }
 
 // Called to bind functionality to input
