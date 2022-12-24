@@ -35,4 +35,8 @@ public:
 	// 죽음 상태 애니메이션 종료 여부
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category=FSM)
 	bool bDieDone = false;
+
+	// Move(Run) 상태 재생할지 여부
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = FSM)
+	bool bRunPlay = false;
 };

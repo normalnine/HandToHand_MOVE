@@ -11,9 +11,10 @@ enum class EEnemyState : uint8
 {
 	Idle,
 	Move,
+	Run,
 	Attack,
 	Damage,
-	Die,
+	Die,	
 };
 
 

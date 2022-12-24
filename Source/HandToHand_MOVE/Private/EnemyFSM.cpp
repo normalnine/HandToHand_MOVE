@@ -90,7 +90,7 @@ void UEnemyFSM::IdleState()
 		anim->animState = mState;
 
 		// 최초 랜덤한 위치 정해주기
-		GetRandomPositionInNavMesh(me->GetActorLocation(), 500, randomPos);
+		GetRandomPositionInNavMesh(me->GetActorLocation(), 300, randomPos);
 	}
 }
 
@@ -128,6 +128,7 @@ void UEnemyFSM::MoveState()
 	{
 		// 타깃쪽으로 이동
 		ai->MoveToLocation(destination);
+		anim->bRunPlay = true;
 	}
 	else
 	{
@@ -138,7 +139,7 @@ void UEnemyFSM::MoveState()
 		if (result == EPathFollowingRequestResult::AlreadyAtGoal)
 		{
 			// 새로운 랜덤 위치 가져오기
-			GetRandomPositionInNavMesh(me->GetActorLocation(), 500, randomPos);
+			GetRandomPositionInNavMesh(me->GetActorLocation(), 300, randomPos);
 		}
 	}
 
@@ -194,7 +195,7 @@ void UEnemyFSM::AttackState()
 		// 애니메이션 상태 동기화
 		anim->animState = mState;
 
-		GetRandomPositionInNavMesh(me->GetActorLocation(), 500, randomPos);
+		GetRandomPositionInNavMesh(me->GetActorLocation(), 300, randomPos);
 	}
 }
 
