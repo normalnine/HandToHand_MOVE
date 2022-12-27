@@ -3,7 +3,8 @@
 
 #include "Enemy.h"
 #include "EnemyFSM.h"
-
+#include "EnemyAnim.h"
+#include <GameFramework/CharacterMovementComponent.h>
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -35,13 +36,25 @@ AEnemy::AEnemy()
 // Called when the game starts or when spawned
 void AEnemy::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();		
+
+	// UEnemyAnim* 할당
+	anim = Cast<UEnemyAnim>(GetMesh()->GetAnimInstance());
+
+	// maxWalkSpeed 값 세팅
+	GetCharacterMovement()->MaxWalkSpeed = 300;
 }
 
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);	
+	Super::Tick(DeltaTime);
+
+	// 달릴 때 MaxWalkSpeed 설정
+	if (anim->bRunPlay == true)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 600;
+	}
 }
 
 // Called to bind functionality to input

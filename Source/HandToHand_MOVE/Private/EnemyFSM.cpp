@@ -10,7 +10,7 @@
 #include "EnemyAnim.h"
 #include <AIController.h>
 #include <NavigationSystem.h>
-
+#include <GameFramework/CharacterMovementComponent.h>
 // Sets default values for this component's properties
 UEnemyFSM::UEnemyFSM()
 {
@@ -19,6 +19,7 @@ UEnemyFSM::UEnemyFSM()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+	
 }
 
 
@@ -126,12 +127,16 @@ void UEnemyFSM::MoveState()
 	// 목적지 까지의 길찾기 성공 여부 확인
 	if (r.Result == ENavigationQueryResult::Success)
 	{
+		
 		// 타깃쪽으로 이동
+		//compCM->GetCharacterOwner()->GetCharacterMovement()->MaxWalkSpeed = 2000;
 		ai->MoveToLocation(destination);
-		anim->bRunPlay = true;
+		anim->bRunPlay = true;	
+
 	}
 	else
 	{
+		//compCM->GetCharacterOwner()->GetCharacterMovement()->MaxWalkSpeed = 500;
 		// 랜덤 위치로 이동
 		auto result = ai->MoveToLocation(randomPos);
 

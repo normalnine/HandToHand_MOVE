@@ -31,8 +31,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=FSMComponent)
 	class UEnemyFSM* fsm;
 
-	UCapsuleComponent* Capsule;
-	FBodyInstance* LHand;
-	FKSphylElem SaveBodySetup; 
+	// 애니메이션 관리 클래스
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class UEnemyAnim* anim;
 
 };

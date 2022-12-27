@@ -38,7 +38,7 @@ public:
 public:
 	// 상태 변수
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSM)
-		EEnemyState mState = EEnemyState::Idle;
+	EEnemyState mState = EEnemyState::Idle;
 
 	// 대기 상태
 	void IdleState();
@@ -106,5 +106,8 @@ public:
 
 	// 랜덤 위치 가져오기
 	bool GetRandomPositionInNavMesh(FVector centerLocation, float radius, FVector& dest);
+
+	UPROPERTY()
+	class UCharacterMovementComponent* compCM;
 };
 
