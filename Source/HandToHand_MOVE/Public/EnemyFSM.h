@@ -108,6 +108,6 @@ public:
 	bool GetRandomPositionInNavMesh(FVector centerLocation, float radius, FVector& dest);
 
 	UPROPERTY()
-	class UCharacterMovementComponent* compCM;
+	class AEnemyManager* enemyManager;
 };
 

@@ -5,6 +5,9 @@
 #include "Enemy.h"
 #include <EngineUtils.h>
 #include <Kismet/GamePlayStatics.h>
+#include "EnemyAnim.h"
+#include "Enemy.h"
+
 
 // Sets default values
 AEnemyManager::AEnemyManager()
@@ -31,8 +34,8 @@ void AEnemyManager::BeginPlay()
 // Called every frame
 void AEnemyManager::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-
+	Super::Tick(DeltaTime);	
+	FindSpawnedEnemy();
 }
 
 void AEnemyManager::CreateEnemy()
@@ -79,6 +82,26 @@ void AEnemyManager::FindSpawnPoints()
 		{
 			// 스폰 목록에 추가
 			spawnPoints.Add(spawn);
+		}
+	}
+}
+
+void AEnemyManager::FindSpawnedEnemy()
+{
+	TArray<AActor*> allEnemyFactory;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemy::StaticClass(), allEnemyFactory);
+	for (int i = 0; i < allEnemyFactory.Num(); i++)
+	{
+		allEnemy[i] = Cast<AEnemy>(allEnemyFactory[i]);
+	}
+	for (int i = 0; i < allEnemy.Num(); i++)
+	{
+		if (allEnemy[i]->fsm->mState == EEnemyState::Attack)
+		{
+			for (int j = i + 1; j < allEnemy.Num(); j++)
+			{
+				allEnemy[i]->fsm->mState = EEnemyState::Idle;
+			}
 		}
 	}
 }

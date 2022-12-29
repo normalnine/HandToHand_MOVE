@@ -48,4 +48,13 @@ public:
 
 	// 스폰할 위치 동적 찾아 할당하기
 	void FindSpawnPoints();
+
+	UPROPERTY(EditAnywhere)
+	bool isattack = false;
+
+	void FindSpawnedEnemy();
+
+	// 다른 에너미 액터
+	UPROPERTY()
+	TArray<class AEnemy*> allEnemy;
 };

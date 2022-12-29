@@ -11,6 +11,7 @@
 #include <AIController.h>
 #include <NavigationSystem.h>
 #include <GameFramework/CharacterMovementComponent.h>
+#include "EnemyManager.h"
 // Sets default values for this component's properties
 UEnemyFSM::UEnemyFSM()
 {
@@ -29,7 +30,7 @@ void UEnemyFSM::BeginPlay()
 	Super::BeginPlay();
 
 	// 월드에서 AHandToHand_MOVECharacter 타깃 찾아오기
-	auto actor = UGameplayStatics::GetActorOfClass(GetWorld(), AHandToHand_MOVECharacter::StaticClass());
+	auto actor = UGameplayStatics::GetActorOfClass(GetWorld(), AHandToHand_MOVECharacter::StaticClass());	
 
 	// AHandToHand_MOVECharacter 타입으로 캐스팅
 	target = Cast<AHandToHand_MOVECharacter>(actor);
@@ -42,6 +43,11 @@ void UEnemyFSM::BeginPlay()
 
 	// AAIController 할당하기
 	ai = Cast<AAIController>(me->GetController());
+
+
+	// enemyManager 할당
+	auto em = UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyManager::StaticClass());
+	enemyManager = Cast<AEnemyManager>(em);	
 }
 
 
@@ -74,7 +80,7 @@ void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 // 대기 상태
 void UEnemyFSM::IdleState() 
-{
+{	
 	// 1. 시간이 흘렀으니깐
 	currentTime += GetWorld()->DeltaTimeSeconds;
 
@@ -98,6 +104,14 @@ void UEnemyFSM::IdleState()
 // 이동 상태
 void UEnemyFSM::MoveState() 
 {
+	// 다른 에너미와의 거리
+	/*float distanceEnemy = FVector::Distance(me->GetActorLocation(), me->GetActorLocation());
+
+	if (distanceEnemy < 200)
+	{
+		mState = EEnemyState::Idle;
+		anim->animState = mState;
+	}*/
 	// 1. 타깃 목적지가 필요하다.
 	FVector destination = target->GetActorLocation();
 
@@ -127,16 +141,12 @@ void UEnemyFSM::MoveState()
 	// 목적지 까지의 길찾기 성공 여부 확인
 	if (r.Result == ENavigationQueryResult::Success)
 	{
-		
 		// 타깃쪽으로 이동
-		//compCM->GetCharacterOwner()->GetCharacterMovement()->MaxWalkSpeed = 2000;
 		ai->MoveToLocation(destination);
 		anim->bRunPlay = true;	
-
 	}
 	else
 	{
-		//compCM->GetCharacterOwner()->GetCharacterMovement()->MaxWalkSpeed = 500;
 		// 랜덤 위치로 이동
 		auto result = ai->MoveToLocation(randomPos);
 
@@ -152,7 +162,17 @@ void UEnemyFSM::MoveState()
 	// 1. 만약 거리가 공격 범위 안에 들어오면
 	if (dir.Size() < attackRange)
 	{
-		// 2. 공격 상태로 전환하고 싶다.
+		if (enemyManager->isattack == true)
+		{
+			// 2. 공격 상태로 전환하고 싶다.
+			mState = EEnemyState::Idle;
+
+			// 애니메이션 상태 동기화
+			anim->animState = mState;
+		}
+
+		else
+		{// 2. 공격 상태로 전환하고 싶다.
 		mState = EEnemyState::Attack;
 
 		// 애니메이션 상태 동기화
@@ -160,9 +180,9 @@ void UEnemyFSM::MoveState()
 
 		// 공격 애니메이션 재생 활성화
 		anim->bAttackPlay = true;
-
+	
 		// 공격 상태 전환 시 대기 시간이 바로 끝나도록 처리
-		currentTime = attackDelayTime;
+		currentTime = attackDelayTime;}
 	}
 }
 
@@ -172,22 +192,26 @@ void UEnemyFSM::AttackState()
 	// 목표 : 일정 시간에 한 번씩 공격하고 싶다.
 	// 1. 시간이 흘러야 한다.
 	currentTime += GetWorld()->DeltaTimeSeconds;
-	
-	// 2. 공격 시간이 됐으니까
-	if (currentTime > attackDelayTime)
-	{
-		// 3. 공격하고 싶다.
-		UE_LOG(LogTemp, Warning, TEXT("Attack!!!"));
+	enemyManager->isattack = true;
+	//if (enemyManager->isattack == false)
+	//{
+		// 2. 공격 시간이 됐으니까
+		if (currentTime > attackDelayTime)
+		{
+			// 3. 공격하고 싶다.
+			UE_LOG(LogTemp, Warning, TEXT("Attack!!!"));
 
-		// 경과 시간 초기화
-		currentTime = 0;
-		anim->bAttackPlay = true;
-	}
+			// 경과 시간 초기화
+			currentTime = 0;
+			anim->bAttackPlay = true;
+			
+		}
+	//}
 
 	// 목표 : 타깃이 공격 범위를 벗어나면 상태를 이동으로 전환하고 싶다.
 	// 1. 타깃과의 거리가 필요하다.
 	float distance = FVector::Distance(target->GetActorLocation(), me->GetActorLocation());
-
+	
 	// 2. 타깃과의 거리가 공격 범위를 벗어났으니까
 	if (distance > attackRange) 
 	{
@@ -202,6 +226,7 @@ void UEnemyFSM::AttackState()
 
 		GetRandomPositionInNavMesh(me->GetActorLocation(), 300, randomPos);
 	}
+	enemyManager->isattack = false;
 }
 
 // 피격 상태
