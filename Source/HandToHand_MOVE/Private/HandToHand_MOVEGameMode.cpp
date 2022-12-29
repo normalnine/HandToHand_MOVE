@@ -7,7 +7,7 @@
 AHandToHand_MOVEGameMode::AHandToHand_MOVEGameMode()
 {
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("Blueprint'/Game/KEJ/3D_Character/BP_PlayerPawn.BP_PlayerPawn_C'"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("Blueprint'/Game/KEJ/Blueprints/BP_PlayerPawn.BP_PlayerPawn_C'"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
