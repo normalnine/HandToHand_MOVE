@@ -11,9 +11,10 @@ enum class EEnemyState : uint8
 {
 	Idle,
 	Move,
+	Run,
 	Attack,
 	Damage,
-	Die,
+	Die,	
 };
 
 
@@ -37,7 +38,7 @@ public:
 public:
 	// 상태 변수
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSM)
-		EEnemyState mState = EEnemyState::Idle;
+	EEnemyState mState = EEnemyState::Idle;
 
 	// 대기 상태
 	void IdleState();
@@ -71,7 +72,7 @@ public:
 
 	// 공격 범위
 	UPROPERTY(EditAnywhere, Category=FSM)
-	float attackRange = 150.0f;
+	float attackRange = 100.0f;
 
 	// 공격 대기 시간 
 	UPROPERTY(EditAnywhere, Category = FSM)
@@ -91,5 +92,22 @@ public:
 	// 아래로 사라지는 속도
 	UPROPERTY(EditAnywhere, Category=FSM)
 	float dieSpeed = 50.0f;
+
+	// 사용 중인 애니메이션 블루프린트
+	UPROPERTY()
+	class UEnemyAnim* anim;
+
+	// Enemy 를 소유하고 있는 AIController
+	UPROPERTY()
+	class AAIController* ai;
+
+	// 길 찾기 수행시 랜덤 위치
+	FVector randomPos;
+
+	// 랜덤 위치 가져오기
+	bool GetRandomPositionInNavMesh(FVector centerLocation, float radius, FVector& dest);
+
+	UPROPERTY()
+	class AEnemyManager* enemyManager;
 };
 

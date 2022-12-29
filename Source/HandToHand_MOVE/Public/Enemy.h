@@ -6,6 +6,25 @@
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
+USTRUCT(BlueprintType)
+struct FMeleeCollisionProfile
+{
+	GENERATED_BODY()
+
+		UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FName Enabled;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FName Disabled;
+
+	// default constructor
+	FMeleeCollisionProfile()
+	{
+		Enabled = FName(TEXT("AllBlcok"));
+		Disabled = FName(TEXT("NoCollision"));
+	}
+};
+
 UCLASS()
 class HANDTOHAND_MOVE_API AEnemy : public ACharacter
 {
@@ -18,7 +37,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -30,5 +49,17 @@ public:
 	// 적 AI 관리 컴포넌트 클래스
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=FSMComponent)
 	class UEnemyFSM* fsm;
+
+	// 애니메이션 관리 클래스
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class UEnemyAnim* anim;
+
+	FMeleeCollisionProfile MeleeCollisionProfile;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* LeftFistCollisionBox;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* RightFistCollisionBox;
 
 };
