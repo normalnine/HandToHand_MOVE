@@ -101,6 +101,7 @@ void AHandToHand_MOVECharacter::LookUpAtRate(float Rate)
 
 void AHandToHand_MOVECharacter::MoveForward(float Value)
 {
+
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
 		// find out which way is forward
@@ -126,4 +127,10 @@ void AHandToHand_MOVECharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+void AHandToHand_MOVECharacter::AttackStart()
+{
+}
+void AHandToHand_MOVECharacter::AttackEnd()
+{
 }
