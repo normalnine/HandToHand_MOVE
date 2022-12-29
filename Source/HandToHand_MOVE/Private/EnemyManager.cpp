@@ -35,7 +35,7 @@ void AEnemyManager::BeginPlay()
 void AEnemyManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);	
-	FindSpawnedEnemy();
+	//FindSpawnedEnemy();
 }
 
 void AEnemyManager::CreateEnemy()
@@ -49,6 +49,7 @@ void AEnemyManager::CreateEnemy()
 	// 다시 랜덤 시간에 CreateEnemy 함수가 호출되도록 타이머 설정
 	float createTime = FMath::RandRange(minTime, maxTime);
 	GetWorld()->GetTimerManager().SetTimer(spawnTimerHandle, this, &AEnemyManager::CreateEnemy, createTime);
+	UE_LOG(LogTemp, Warning, TEXT("spawndadd"));
 }
 
 //void AEnemyManager::FindSpawnPoints()
@@ -82,6 +83,7 @@ void AEnemyManager::FindSpawnPoints()
 		{
 			// 스폰 목록에 추가
 			spawnPoints.Add(spawn);
+			
 		}
 	}
 }

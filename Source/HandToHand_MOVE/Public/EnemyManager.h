@@ -44,9 +44,11 @@ public:
 	FTimerHandle spawnTimerHandle;
 
 	// 적 생성 함수
+	UFUNCTION()
 	void CreateEnemy();
 
 	// 스폰할 위치 동적 찾아 할당하기
+	UFUNCTION()
 	void FindSpawnPoints();
 
 	UPROPERTY(EditAnywhere)
