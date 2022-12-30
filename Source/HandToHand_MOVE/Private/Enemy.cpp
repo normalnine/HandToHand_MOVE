@@ -48,7 +48,6 @@ AEnemy::AEnemy()
 	RightFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	RightFistCollisionBox->SetNotifyRigidBodyCollision(false);
 	RightFistCollisionBox->SetRelativeScale3D(FVector(0.1875));
-
 	// 인게임에서 충돌 박스 보이게 하기
 	RightFistCollisionBox->SetHiddenInGame(false);
 }
@@ -86,5 +85,23 @@ void AEnemy::Tick(float DeltaTime)
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+
+void AEnemy::AttackStart()
+{
+	LeftFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Enabled);
+	LeftFistCollisionBox->SetNotifyRigidBodyCollision(true);
+
+	RightFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Enabled);
+	RightFistCollisionBox->SetNotifyRigidBodyCollision(true);
+}
+void AEnemy::AttackEnd()
+{
+	LeftFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
+	LeftFistCollisionBox->SetNotifyRigidBodyCollision(false);
+
+	RightFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
+	RightFistCollisionBox->SetNotifyRigidBodyCollision(false);
 }
 

@@ -6,6 +6,7 @@
 #include <EngineUtils.h>
 #include <Kismet/GamePlayStatics.h>
 #include "EnemyAnim.h"
+#include "EnemyFSM.h"
 #include "Enemy.h"
 
 
@@ -25,7 +26,7 @@ void AEnemyManager::BeginPlay()
 	float createTime = FMath::RandRange(minTime, maxTime);
 
 	// 2. Timer Manager 한테 알람 등록
-	GetWorld()->GetTimerManager().SetTimer(spawnTimerHandle, this, &AEnemyManager::CreateEnemy, createTime);	
+	GetWorld()->GetTimerManager().SetTimer(spawnTimerHandle, this, &AEnemyManager::CreateEnemy, createTime);
 
 	// 스폰 위치 동적 할당
 	FindSpawnPoints();
@@ -35,7 +36,12 @@ void AEnemyManager::BeginPlay()
 void AEnemyManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);	
-	//FindSpawnedEnemy();
+
+	if (allEnemy.IsEmpty() == true) {}
+	else
+	{
+		FindSpawnedEnemy();
+	}
 }
 
 void AEnemyManager::CreateEnemy()
@@ -44,28 +50,14 @@ void AEnemyManager::CreateEnemy()
 	int index = FMath::RandRange(0, spawnPoints.Num() - 1);
 
 	// 적 생성 및 배치하기
-	GetWorld()->SpawnActor<AEnemy>(enemyFactory, spawnPoints[index]->GetActorLocation(), FRotator(0));
+	AEnemy* enemy = GetWorld()->SpawnActor<AEnemy>(enemyFactory, spawnPoints[index]->GetActorLocation(), FRotator(0));
+	allEnemy.Add(enemy);
 
 	// 다시 랜덤 시간에 CreateEnemy 함수가 호출되도록 타이머 설정
 	float createTime = FMath::RandRange(minTime, maxTime);
 	GetWorld()->GetTimerManager().SetTimer(spawnTimerHandle, this, &AEnemyManager::CreateEnemy, createTime);
-	UE_LOG(LogTemp, Warning, TEXT("spawndadd"));
+	
 }
-
-//void AEnemyManager::FindSpawnPoints()
-//{
-//	for (TActorIterator<AActor> It(GetWorld()); It; ++It)
-//	{
-//		AActor* spawn = *It;
-//
-//		// 찾은 액터의 이름에 해당 문자열을 포함하고 있다면
-//		if (spawn->GetName().Contains(TEXT("BP_EnemySpawnPoint")))
-//		{
-//			// 스폰 목록에 추가
-//			spawnPoints.Add(spawn);
-//		}
-//	}
-//}
 
 void AEnemyManager::FindSpawnPoints()
 {
@@ -90,20 +82,15 @@ void AEnemyManager::FindSpawnPoints()
 
 void AEnemyManager::FindSpawnedEnemy()
 {
-	TArray<AActor*> allEnemyFactory;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemy::StaticClass(), allEnemyFactory);
-	for (int i = 0; i < allEnemyFactory.Num(); i++)
-	{
-		allEnemy[i] = Cast<AEnemy>(allEnemyFactory[i]);
-	}
 	for (int i = 0; i < allEnemy.Num(); i++)
 	{
-		if (allEnemy[i]->fsm->mState == EEnemyState::Attack)
+		if (allEnemy[i]->fsm->anim->bAttackPlay == true)
 		{
 			for (int j = i + 1; j < allEnemy.Num(); j++)
 			{
-				allEnemy[i]->fsm->mState = EEnemyState::Idle;
+				allEnemy[i]->fsm->anim->bAttackPlay = false;
 			}
+			break;
 		}
 	}
 }

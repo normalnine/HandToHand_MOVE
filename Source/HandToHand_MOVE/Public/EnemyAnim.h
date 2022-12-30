@@ -38,5 +38,5 @@ public:
 
 	// Move(Run) 상태 재생할지 여부
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = FSM)
-	bool bRunPlay = false;
+	bool bRunPlay = false;	
 };

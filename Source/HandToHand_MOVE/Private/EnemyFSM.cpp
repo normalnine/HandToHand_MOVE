@@ -43,11 +43,6 @@ void UEnemyFSM::BeginPlay()
 
 	// AAIController 할당하기
 	ai = Cast<AAIController>(me->GetController());
-
-
-	// enemyManager 할당
-	auto em = UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyManager::StaticClass());
-	enemyManager = Cast<AEnemyManager>(em);	
 }
 
 
@@ -104,14 +99,6 @@ void UEnemyFSM::IdleState()
 // 이동 상태
 void UEnemyFSM::MoveState() 
 {
-	// 다른 에너미와의 거리
-	/*float distanceEnemy = FVector::Distance(me->GetActorLocation(), me->GetActorLocation());
-
-	if (distanceEnemy < 200)
-	{
-		mState = EEnemyState::Idle;
-		anim->animState = mState;
-	}*/
 	// 1. 타깃 목적지가 필요하다.
 	FVector destination = target->GetActorLocation();
 
@@ -162,27 +149,17 @@ void UEnemyFSM::MoveState()
 	// 1. 만약 거리가 공격 범위 안에 들어오면
 	if (dir.Size() < attackRange)
 	{
-		if (enemyManager->isattack == true)
-		{
-			// 2. 공격 상태로 전환하고 싶다.
-			mState = EEnemyState::Idle;
-
-			// 애니메이션 상태 동기화
-			anim->animState = mState;
-		}
-
-		else
-		{// 2. 공격 상태로 전환하고 싶다.
+		// 2. 공격 상태로 전환하고 싶다.
 		mState = EEnemyState::Attack;
 
 		// 애니메이션 상태 동기화
 		anim->animState = mState;
 
 		// 공격 애니메이션 재생 활성화
-		anim->bAttackPlay = true;
+		anim->bAttackPlay = true;		
 	
 		// 공격 상태 전환 시 대기 시간이 바로 끝나도록 처리
-		currentTime = attackDelayTime;}
+		currentTime = attackDelayTime;		
 	}
 }
 
@@ -192,21 +169,18 @@ void UEnemyFSM::AttackState()
 	// 목표 : 일정 시간에 한 번씩 공격하고 싶다.
 	// 1. 시간이 흘러야 한다.
 	currentTime += GetWorld()->DeltaTimeSeconds;
-	enemyManager->isattack = true;
-	//if (enemyManager->isattack == false)
-	//{
-		// 2. 공격 시간이 됐으니까
-		if (currentTime > attackDelayTime)
+		
+	// 2. 공격 시간이 됐으니까
+	if (currentTime > attackDelayTime)
 		{
-			// 3. 공격하고 싶다.
-			UE_LOG(LogTemp, Warning, TEXT("Attack!!!"));
+		// 3. 공격하고 싶다.
+		UE_LOG(LogTemp, Warning, TEXT("Attack!!!"));
 
-			// 경과 시간 초기화
-			currentTime = 0;
-			anim->bAttackPlay = true;
-			
-		}
-	//}
+		// 경과 시간 초기화
+		currentTime = 0;
+		anim->bAttackPlay = true;
+		me->AttackStart();			
+	}
 
 	// 목표 : 타깃이 공격 범위를 벗어나면 상태를 이동으로 전환하고 싶다.
 	// 1. 타깃과의 거리가 필요하다.
@@ -220,13 +194,13 @@ void UEnemyFSM::AttackState()
 
 		// 3. 상태를 이동으로 전환하고 싶다.
 		mState = EEnemyState::Move;
+		me->AttackEnd();
 
 		// 애니메이션 상태 동기화
 		anim->animState = mState;
 
 		GetRandomPositionInNavMesh(me->GetActorLocation(), 300, randomPos);
 	}
-	enemyManager->isattack = false;
 }
 
 // 피격 상태
@@ -279,7 +253,12 @@ void UEnemyFSM::DieState()
 void UEnemyFSM::OnDamageProcess()
 {
 	// 체력 감소
-	hp--;
+	hp--;	
+
+	FVector P0 = me->GetActorLocation();
+	FVector vt = me->GetActorForwardVector() * knockBackSpeed;
+	FVector P = P0 + vt;
+	me->SetActorLocation(P);
 
 	// 만약 체력이 남아있다면
 	if (hp > 0)

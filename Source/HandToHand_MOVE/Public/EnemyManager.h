@@ -59,4 +59,5 @@ public:
 	// 다른 에너미 액터
 	UPROPERTY()
 	TArray<class AEnemy*> allEnemy;
+	
 };
