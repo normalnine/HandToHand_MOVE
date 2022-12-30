@@ -66,8 +66,8 @@ void AEnemy::BeginPlay()
 
 	const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false);
 
-	//LeftFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_l_collision");
-	//RightFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_r_collision");
+	LeftFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_l_collision");
+	RightFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_r_collision");
 }
 
 // Called every frame

@@ -79,7 +79,7 @@ void AEnemyManager::FindSpawnPoints()
 	for (auto spawn : allActors)
 	{
 		// 찾은 액터의 이름에 해당 문자열을 포함하고 있다면
-		if (spawn->GetName().Contains(TEXT("BP_EnemySpawnPoint")))
+		if (spawn->GetName().Contains(TEXT("SpawnPoint")))
 		{
 			// 스폰 목록에 추가
 			spawnPoints.Add(spawn);
