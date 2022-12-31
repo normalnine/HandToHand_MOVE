@@ -10,7 +10,7 @@
 AEnemy::AEnemy()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempMesh(TEXT("SkeletalMesh'/Game/KDH/Enemy/Resource/Ch18_nonPBR.Ch18_nonPBR'"));
 	if (tempMesh.Succeeded())
@@ -48,7 +48,6 @@ AEnemy::AEnemy()
 	RightFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	RightFistCollisionBox->SetNotifyRigidBodyCollision(false);
 	RightFistCollisionBox->SetRelativeScale3D(FVector(0.1875));
-
 	// 인게임에서 충돌 박스 보이게 하기
 	RightFistCollisionBox->SetHiddenInGame(false);
 }
@@ -66,25 +65,37 @@ void AEnemy::BeginPlay()
 
 	const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false);
 
-	//LeftFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_l_collision");
-	//RightFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_r_collision");
+	LeftFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_l_collision");
+	RightFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_r_collision");
 }
 
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	// 달릴 때 MaxWalkSpeed 설정
-	if (anim->bRunPlay == true)
-	{
-		GetCharacterMovement()->MaxWalkSpeed = 600;
-	}
 }
 
 // Called to bind functionality to input
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+
+void AEnemy::AttackStart()
+{
+	LeftFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Enabled);
+	LeftFistCollisionBox->SetNotifyRigidBodyCollision(true);
+
+	RightFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Enabled);
+	RightFistCollisionBox->SetNotifyRigidBodyCollision(true);
+}
+void AEnemy::AttackEnd()
+{
+	LeftFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
+	LeftFistCollisionBox->SetNotifyRigidBodyCollision(false);
+
+	RightFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
+	RightFistCollisionBox->SetNotifyRigidBodyCollision(false);
 }
 

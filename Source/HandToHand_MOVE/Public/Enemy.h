@@ -20,7 +20,7 @@ struct FMeleeCollisionProfile
 	// default constructor
 	FMeleeCollisionProfile()
 	{
-		Enabled = FName(TEXT("AllBlcok"));
+		Enabled = FName(TEXT("OverlapAll"));
 		Disabled = FName(TEXT("NoCollision"));
 	}
 };
@@ -62,4 +62,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* RightFistCollisionBox;
 
+	void AttackStart();
+	void AttackEnd();
 };

@@ -79,6 +79,7 @@ public:
 	float attackDelayTime = 2.0f;
 
 	// 피격 알림 이벤트 함수
+	UFUNCTION(BlueprintCallable)
 	void OnDamageProcess();
 
 	// 체력
@@ -92,6 +93,10 @@ public:
 	// 아래로 사라지는 속도
 	UPROPERTY(EditAnywhere, Category=FSM)
 	float dieSpeed = 50.0f;
+
+	// 넉백 되는 속도
+	UPROPERTY(EditAnywhere, Category=FSM)
+	float knockBackSpeed = -50.0f;
 
 	// 사용 중인 애니메이션 블루프린트
 	UPROPERTY()
@@ -107,7 +112,5 @@ public:
 	// 랜덤 위치 가져오기
 	bool GetRandomPositionInNavMesh(FVector centerLocation, float radius, FVector& dest);
 
-	UPROPERTY()
-	class AEnemyManager* enemyManager;
 };
 

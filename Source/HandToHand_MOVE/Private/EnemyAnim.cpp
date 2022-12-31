@@ -2,6 +2,8 @@
 
 
 #include "EnemyAnim.h"
+#include "EnemyFSM.h"
+#include "Enemy.h"
 
 void UEnemyAnim::OnEndAttackAnimation()
 {
