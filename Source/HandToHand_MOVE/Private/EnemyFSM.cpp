@@ -131,6 +131,7 @@ void UEnemyFSM::MoveState()
 		// 타깃쪽으로 이동
 		ai->MoveToLocation(destination);
 		anim->bRunPlay = true;	
+		me->GetCharacterMovement()->MaxWalkSpeed = 600;
 	}
 	else
 	{
@@ -301,3 +302,4 @@ bool UEnemyFSM::GetRandomPositionInNavMesh(FVector centerLocation, float radius,
 	dest = loc.Location;
 	return result;
 }
+

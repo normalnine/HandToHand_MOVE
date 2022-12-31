@@ -10,7 +10,7 @@
 AEnemy::AEnemy()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	ConstructorHelpers::FObjectFinder<USkeletalMesh> tempMesh(TEXT("SkeletalMesh'/Game/KDH/Enemy/Resource/Ch18_nonPBR.Ch18_nonPBR'"));
 	if (tempMesh.Succeeded())
@@ -73,12 +73,6 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	// 달릴 때 MaxWalkSpeed 설정
-	if (anim->bRunPlay == true)
-	{
-		GetCharacterMovement()->MaxWalkSpeed = 600;
-	}
 }
 
 // Called to bind functionality to input
