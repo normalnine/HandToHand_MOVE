@@ -243,7 +243,7 @@ void UEnemyFSM::DieState()
 	me->SetActorLocation(P);
 
 	// 1. 만약 2미터 이상 내려왔다면
-	if (P.Z < -200.0f)
+	if (P.Z < -100.0f)
 	{
 		// 2. 제거시킨다.
 		me->Destroy();
@@ -256,8 +256,8 @@ void UEnemyFSM::OnDamageProcess()
 	// 체력 감소
 	hp--;	
 
-	FVector P0 = me->GetActorLocation();
-	FVector vt = me->GetActorForwardVector() * knockBackSpeed;
+	FVector P0 = target->GetActorLocation();
+	FVector vt = target->GetActorForwardVector() * knockBackSpeed;
 	FVector P = P0 + vt;
 	me->SetActorLocation(P);
 

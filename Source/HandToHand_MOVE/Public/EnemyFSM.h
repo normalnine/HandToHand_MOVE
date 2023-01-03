@@ -96,7 +96,7 @@ public:
 
 	// 넉백 되는 속도
 	UPROPERTY(EditAnywhere, Category=FSM)
-	float knockBackSpeed = -50.0f;
+	float knockBackSpeed = 150.0f;
 
 	// 사용 중인 애니메이션 블루프린트
 	UPROPERTY()
