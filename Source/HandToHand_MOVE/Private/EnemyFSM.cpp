@@ -284,7 +284,7 @@ void UEnemyFSM::OnDamageProcess()
 
 		// 캡슐 충돌체 비활성화
 		me->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
+		me->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		// 죽음 애니메이션 재생
 		anim->PlayDamageAnim(TEXT("Die"));
 	}
