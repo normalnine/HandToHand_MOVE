@@ -30,7 +30,10 @@ public:
 
 	// 랜덤 시간 간격 최댓값
 	UPROPERTY(EditAnywhere, Category = SpawnSettings)
-	float maxTime = 5;
+	float maxTime = 2;
+
+	UPROPERTY(EditAnywhere)
+	int32 enemySpawnCounter = 0;
 
 	// 스폰할 위치 정보 배열
 	UPROPERTY(EditAnywhere, Category = SpawnSettings)
@@ -43,6 +46,12 @@ public:
 	// 스폰을 위한 알람 타이머
 	FTimerHandle spawnTimerHandle;
 
+	UPROPERTY()
+	class AHandToHand_MOVEGameMode* currGameMode;
+
+	UPROPERTY()
+	class UHTH_GameInstance* hthGameInstance;
+
 	// 적 생성 함수
 	UFUNCTION()
 	void CreateEnemy();
@@ -50,14 +59,4 @@ public:
 	// 스폰할 위치 동적 찾아 할당하기
 	UFUNCTION()
 	void FindSpawnPoints();
-
-	UPROPERTY(EditAnywhere)
-	bool isattack = false;
-
-	void FindSpawnedEnemy();
-
-	// 다른 에너미 액터
-	UPROPERTY()
-	TArray<class AEnemy*> allEnemy;
-	
 };

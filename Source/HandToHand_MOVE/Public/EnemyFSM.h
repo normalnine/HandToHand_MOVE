@@ -88,7 +88,7 @@ public:
 
 	// 피격 대기 시간
 	UPROPERTY(EditAnywhere, Category=FSM)
-	float damageDelayTime = 2.0f;
+	float damageDelayTime = 4.0f;
 
 	// 아래로 사라지는 속도
 	UPROPERTY(EditAnywhere, Category=FSM)
@@ -105,6 +105,9 @@ public:
 	// Enemy 를 소유하고 있는 AIController
 	UPROPERTY()
 	class AAIController* ai;
+
+	UPROPERTY()
+	class AHandToHand_MOVEGameMode* currGameMode;
 
 	// 길 찾기 수행시 랜덤 위치
 	FVector randomPos;

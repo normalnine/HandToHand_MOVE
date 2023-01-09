@@ -6,6 +6,8 @@
 #include "EnemyAnim.h"
 #include <GameFramework/CharacterMovementComponent.h>
 #include <Components/BoxComponent.h>
+#include <Kismet/GameplayStatics.h>
+#include "EnemyManager.h"
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -67,6 +69,9 @@ void AEnemy::BeginPlay()
 
 	LeftFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_l_collision");
 	RightFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_r_collision");
+
+	AActor* eM = UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyManager::StaticClass());
+	enemyManager = Cast<AEnemyManager>(eM);
 }
 
 // Called every frame

@@ -13,6 +13,28 @@ class AHandToHand_MOVEGameMode : public AGameModeBase
 
 public:
 	AHandToHand_MOVEGameMode();
+
+public:
+	UPROPERTY(EditAnywhere)
+	int32 stageLevel;
+
+	UPROPERTY(EditAnywhere)
+	int32 allEnemyNum;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UMainUI> mainWidget;
+
+	UPROPERTY()
+	class UMainUI* mainUI;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UNextLevelUI> NextLevelWidget;
+
+	UPROPERTY()
+	class UNextLevelUI* NextLevelUI;
+
+	UFUNCTION()
+	void ShowNextLevel();
 };
 
 

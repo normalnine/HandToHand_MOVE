@@ -62,6 +62,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Collision, meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* RightFistCollisionBox;
 
+	UPROPERTY(EditAnywhere)
+	class AEnemyManager* enemyManager;
+
 	void AttackStart();
 	void AttackEnd();
 };

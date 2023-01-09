@@ -12,6 +12,7 @@
 #include <NavigationSystem.h>
 #include <GameFramework/CharacterMovementComponent.h>
 #include "EnemyManager.h"
+#include "HandToHand_MOVEGameMode.h"
 // Sets default values for this component's properties
 UEnemyFSM::UEnemyFSM()
 {
@@ -43,6 +44,9 @@ void UEnemyFSM::BeginPlay()
 
 	// AAIController 할당하기
 	ai = Cast<AAIController>(me->GetController());
+
+	// 게임모드 캐스팅
+	currGameMode = Cast<AHandToHand_MOVEGameMode>(GetWorld()->GetAuthGameMode());
 }
 
 
@@ -240,13 +244,24 @@ void UEnemyFSM::DieState()
 	FVector P0 = me->GetActorLocation();
 	FVector vt = FVector::DownVector * dieSpeed * GetWorld()->DeltaTimeSeconds;
 	FVector P = P0 + vt;
-	me->SetActorLocation(P);
+	me->SetActorLocation(P);	
 
 	// 1. 만약 2미터 이상 내려왔다면
 	if (P.Z < -100.0f)
 	{
+		// 총 에너미에서 죽을 때마다 카운트
+		currGameMode->allEnemyNum--;
+		UE_LOG(LogTemp, Warning, TEXT("allEnemyNum %d"), currGameMode->allEnemyNum);
+
+		if (currGameMode->allEnemyNum == 0)
+		{
+			currGameMode->ShowNextLevel();
+			UGameplayStatics::SetGamePaused(GetWorld(), true);
+			GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+		}
+
 		// 2. 제거시킨다.
-		me->Destroy();
+		me->Destroy();		
 	}
 }
 
