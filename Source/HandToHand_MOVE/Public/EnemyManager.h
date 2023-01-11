@@ -26,11 +26,11 @@ public:
 public:
 	// 楠渾 衛除 除問 譆歐高
 	UPROPERTY(EditAnywhere, Category = SpawnSettings)
-	float minTime = 1;
+	float minTime = 0;
 
 	// 楠渾 衛除 除問 譆渤高
 	UPROPERTY(EditAnywhere, Category = SpawnSettings)
-	float maxTime = 2;
+	float maxTime = 1;
 
 	UPROPERTY(EditAnywhere)
 	int32 enemySpawnCounter = 0;
@@ -51,6 +51,9 @@ public:
 
 	UPROPERTY()
 	class UHTH_GameInstance* hthGameInstance;
+
+	
+	FActorSpawnParameters spawParam;
 
 	// 瞳 儅撩 л熱
 	UFUNCTION()

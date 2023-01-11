@@ -10,6 +10,7 @@
 #include "Enemy.h"
 #include "HandToHand_MOVEGameMode.h"
 #include "HTH_GameInstance.h"
+#include <Engine/EngineTypes.h>
 
 
 // Sets default values
@@ -42,6 +43,9 @@ void AEnemyManager::BeginPlay()
 
 	// 2. Timer Manager 한테 알람 등록
 	GetWorld()->GetTimerManager().SetTimer(spawnTimerHandle, this, &AEnemyManager::CreateEnemy, createTime);	
+
+	// 항상 스폰되게 설정
+	spawParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
 // Called every frame
@@ -53,14 +57,14 @@ void AEnemyManager::Tick(float DeltaTime)
 void AEnemyManager::CreateEnemy()
 {
 	// 랜덤 위치 구하기
-	int index = FMath::RandRange(0, spawnPoints.Num() - 1);
+	int index = FMath::RandRange(0, spawnPoints.Num() - 1);	
 
 	// 적 생성 및 배치하기
-	GetWorld()->SpawnActor<AEnemy>(enemyFactory, spawnPoints[index]->GetActorLocation(), FRotator(0));
+	GetWorld()->SpawnActor<AEnemy>(enemyFactory, spawnPoints[index]->GetActorLocation(), FRotator(0), spawParam);
 
 	// 적 생성된 수 카운트 하기
 	enemySpawnCounter++;
-	
+	UE_LOG(LogTemp,Warning,TEXT("%d 번째 적 생성"), enemySpawnCounter);
 
 	// 적을 다 생성했으면 그만 생성하기
 	if (enemySpawnCounter >= currGameMode->allEnemyNum) return;

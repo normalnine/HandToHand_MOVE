@@ -4,27 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MainUI.generated.h"
+#include "StartMenuUI.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class HANDTOHAND_MOVE_API UMainUI : public UUserWidget
+class HANDTOHAND_MOVE_API UStartMenuUI : public UUserWidget
 {
 	GENERATED_BODY()
 
 protected:
-	//BeginPlay 와 같은 동작
-	virtual void NativeConstruct() override;
+	virtual void NativeConstruct() override;	
 
 public:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-	class UTextBlock* currLevelUI;
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
-	class UTextBlock* bestLevelUI;
+	class UButton* btnStart;
 
-public:
-	void UpdateCurrLevelUI(int32 score);
-	void UpdateBestLevelUI(int32 score);
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UButton* btnQuit;
+
+	UFUNCTION()
+	void Start();
+
+	UFUNCTION()
+	void Quit();
 };

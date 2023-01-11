@@ -256,8 +256,7 @@ void UEnemyFSM::DieState()
 		if (currGameMode->allEnemyNum == 0)
 		{
 			currGameMode->ShowNextLevel();
-			UGameplayStatics::SetGamePaused(GetWorld(), true);
-			GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+			
 		}
 
 		// 2. 제거시킨다.
