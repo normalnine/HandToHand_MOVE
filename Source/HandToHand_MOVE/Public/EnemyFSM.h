@@ -115,5 +115,7 @@ public:
 	// 랜덤 위치 가져오기
 	bool GetRandomPositionInNavMesh(FVector centerLocation, float radius, FVector& dest);
 
+	// 공격 패턴 정하기
+	void ChoiceAttack();
 };
 

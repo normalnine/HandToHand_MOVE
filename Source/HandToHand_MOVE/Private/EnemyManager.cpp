@@ -81,7 +81,7 @@ void AEnemyManager::FindSpawnPoints()
 
 	// 원하는 타입의 액터 모두 찾아오기
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), allActors);
-
+	
 	// 찾은 결과가 있을 경우 반복적으로
 	for (auto spawn : allActors)
 	{

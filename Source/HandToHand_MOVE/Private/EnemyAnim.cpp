@@ -8,4 +8,7 @@
 void UEnemyAnim::OnEndAttackAnimation()
 {
 	bAttackPlay = false;
+	bAttackPlay1 = false;
+	bAttackPlay2 = false;
 }
+	

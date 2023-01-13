@@ -52,6 +52,26 @@ AEnemy::AEnemy()
 	RightFistCollisionBox->SetRelativeScale3D(FVector(0.1875));
 	// 인게임에서 충돌 박스 보이게 하기
 	RightFistCollisionBox->SetHiddenInGame(false);
+
+	// 왼쪽 발 충돌 박스 생성
+	LeftFootCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("LeftFootCollisionBox"));
+	LeftFootCollisionBox->SetupAttachment(RootComponent);
+	LeftFootCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
+	LeftFootCollisionBox->SetNotifyRigidBodyCollision(false);
+	LeftFootCollisionBox->SetRelativeScale3D(FVector(0.01));
+	// 인게임에서 충돌 박스 보이게 하기
+	LeftFootCollisionBox->SetHiddenInGame(false);
+
+	// 오른쪽 발 충돌 박스 생성
+	RightFootCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RightFootCollisionBox"));
+	RightFootCollisionBox->SetupAttachment(RootComponent);
+	RightFootCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
+	RightFootCollisionBox->SetNotifyRigidBodyCollision(false);
+	RightFootCollisionBox->SetRelativeScale3D(FVector(0.01));
+	// 인게임에서 충돌 박스 보이게 하기
+	RightFootCollisionBox->SetHiddenInGame(false);
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -69,6 +89,8 @@ void AEnemy::BeginPlay()
 
 	LeftFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_l_collision");
 	RightFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_r_collision");
+	LeftFootCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "LeftFootSocket");
+	RightFootCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "RightFootSocket");
 
 	AActor* eM = UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyManager::StaticClass());
 	enemyManager = Cast<AEnemyManager>(eM);

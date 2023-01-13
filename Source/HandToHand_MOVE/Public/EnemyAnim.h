@@ -24,6 +24,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = FSM)
 	bool bAttackPlay = false;
 
+	// 공격 상태 재생할지 여부
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = FSM)
+	bool bAttackPlay1 = false;
+
+	// 공격 상태 재생할지 여부
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = FSM)
+	bool bAttackPlay2 = false;
+
 	// 공격 애니메이션 끝나는 이벤트 함수
 	UFUNCTION(BlueprintCallable, Category=FSMEvent)
 	void OnEndAttackAnimation();
