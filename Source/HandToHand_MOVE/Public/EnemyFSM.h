@@ -76,7 +76,7 @@ public:
 
 	// 공격 대기 시간 
 	UPROPERTY(EditAnywhere, Category = FSM)
-	float attackDelayTime = 2.0f;
+	float attackDelayTime = 3.0f;
 
 	// 피격 알림 이벤트 함수
 	UFUNCTION(BlueprintCallable)
@@ -88,7 +88,7 @@ public:
 
 	// 피격 대기 시간
 	UPROPERTY(EditAnywhere, Category=FSM)
-	float damageDelayTime = 4.0f;
+	float damageDelayTime = 3.0f;
 
 	// 아래로 사라지는 속도
 	UPROPERTY(EditAnywhere, Category=FSM)
