@@ -76,7 +76,7 @@ public:
 
 	// 공격 대기 시간 
 	UPROPERTY(EditAnywhere, Category = FSM)
-	float attackDelayTime = 2.0f;
+	float attackDelayTime = 3.0f;
 
 	// 피격 알림 이벤트 함수
 	UFUNCTION(BlueprintCallable)
@@ -88,7 +88,7 @@ public:
 
 	// 피격 대기 시간
 	UPROPERTY(EditAnywhere, Category=FSM)
-	float damageDelayTime = 2.0f;
+	float damageDelayTime = 3.0f;
 
 	// 아래로 사라지는 속도
 	UPROPERTY(EditAnywhere, Category=FSM)
@@ -96,7 +96,7 @@ public:
 
 	// 넉백 되는 속도
 	UPROPERTY(EditAnywhere, Category=FSM)
-	float knockBackSpeed = -50.0f;
+	float knockBackSpeed = 150.0f;
 
 	// 사용 중인 애니메이션 블루프린트
 	UPROPERTY()
@@ -106,11 +106,16 @@ public:
 	UPROPERTY()
 	class AAIController* ai;
 
+	UPROPERTY()
+	class AHandToHand_MOVEGameMode* currGameMode;
+
 	// 길 찾기 수행시 랜덤 위치
 	FVector randomPos;
 
 	// 랜덤 위치 가져오기
 	bool GetRandomPositionInNavMesh(FVector centerLocation, float radius, FVector& dest);
 
+	// 공격 패턴 정하기
+	void ChoiceAttack();
 };
 

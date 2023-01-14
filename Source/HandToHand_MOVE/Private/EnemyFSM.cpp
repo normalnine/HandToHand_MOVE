@@ -12,6 +12,7 @@
 #include <NavigationSystem.h>
 #include <GameFramework/CharacterMovementComponent.h>
 #include "EnemyManager.h"
+#include "HandToHand_MOVEGameMode.h"
 // Sets default values for this component's properties
 UEnemyFSM::UEnemyFSM()
 {
@@ -43,6 +44,9 @@ void UEnemyFSM::BeginPlay()
 
 	// AAIController 할당하기
 	ai = Cast<AAIController>(me->GetController());
+
+	// 게임모드 캐스팅
+	currGameMode = Cast<AHandToHand_MOVEGameMode>(GetWorld()->GetAuthGameMode());
 }
 
 
@@ -155,9 +159,10 @@ void UEnemyFSM::MoveState()
 
 		// 애니메이션 상태 동기화
 		anim->animState = mState;
+		
 
-		// 공격 애니메이션 재생 활성화
-		anim->bAttackPlay = true;		
+		// 공격 애니메이션 재생 활성화					
+		ChoiceAttack();
 	
 		// 공격 상태 전환 시 대기 시간이 바로 끝나도록 처리
 		currentTime = attackDelayTime;		
@@ -179,8 +184,8 @@ void UEnemyFSM::AttackState()
 
 		// 경과 시간 초기화
 		currentTime = 0;
-		anim->bAttackPlay = true;
-		me->AttackStart();			
+		me->AttackStart();
+		ChoiceAttack();			
 	}
 
 	// 목표 : 타깃이 공격 범위를 벗어나면 상태를 이동으로 전환하고 싶다.
@@ -192,10 +197,12 @@ void UEnemyFSM::AttackState()
 	{
 		// 길 찾기 기능 정지
 		ai->StopMovement();
+		// 충돌 비활성화
+		me->AttackEnd();
 
 		// 3. 상태를 이동으로 전환하고 싶다.
 		mState = EEnemyState::Move;
-		me->AttackEnd();
+		
 
 		// 애니메이션 상태 동기화
 		anim->animState = mState;
@@ -214,7 +221,7 @@ void UEnemyFSM::DamageState()
 	if (currentTime > damageDelayTime)
 	{
 		// 3. 대기 상태로 전환하고 싶다.
-		mState = EEnemyState::Idle;
+		mState = EEnemyState::Attack;
 
 		// 경과 시간 초기화
 		currentTime = 0;
@@ -240,13 +247,23 @@ void UEnemyFSM::DieState()
 	FVector P0 = me->GetActorLocation();
 	FVector vt = FVector::DownVector * dieSpeed * GetWorld()->DeltaTimeSeconds;
 	FVector P = P0 + vt;
-	me->SetActorLocation(P);
+	me->SetActorLocation(P);	
 
 	// 1. 만약 2미터 이상 내려왔다면
-	if (P.Z < -200.0f)
+	if (P.Z < -100.0f)
 	{
+		// 총 에너미에서 죽을 때마다 카운트
+		currGameMode->allEnemyNum--;
+		UE_LOG(LogTemp, Warning, TEXT("allEnemyNum %d"), currGameMode->allEnemyNum);
+
+		if (currGameMode->allEnemyNum == 0)
+		{
+			currGameMode->ShowNextLevel();
+			
+		}
+
 		// 2. 제거시킨다.
-		me->Destroy();
+		me->Destroy();		
 	}
 }
 
@@ -256,8 +273,8 @@ void UEnemyFSM::OnDamageProcess()
 	// 체력 감소
 	hp--;	
 
-	FVector P0 = me->GetActorLocation();
-	FVector vt = me->GetActorForwardVector() * knockBackSpeed;
+	FVector P0 = target->GetActorLocation();
+	FVector vt = target->GetActorForwardVector() * knockBackSpeed;
 	FVector P = P0 + vt;
 	me->SetActorLocation(P);
 
@@ -284,7 +301,7 @@ void UEnemyFSM::OnDamageProcess()
 
 		// 캡슐 충돌체 비활성화
 		me->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
+		me->GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		// 죽음 애니메이션 재생
 		anim->PlayDamageAnim(TEXT("Die"));
 	}
@@ -303,3 +320,23 @@ bool UEnemyFSM::GetRandomPositionInNavMesh(FVector centerLocation, float radius,
 	return result;
 }
 
+void UEnemyFSM::ChoiceAttack()
+{
+	int32 randAttack = FMath::RandRange(0, 2);
+	UE_LOG(LogTemp, Warning, TEXT("attackNum : %d"), randAttack);
+
+	switch (randAttack)
+	{
+	case 0:
+		anim->bAttackPlay = true;
+		break;
+	case 1:
+		anim->bAttackPlay1 = true;
+		break;
+	case 2:
+		anim->bAttackPlay2 = true;
+		break;
+	default:
+		break;
+	}
+}
