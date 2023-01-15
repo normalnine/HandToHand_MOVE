@@ -58,7 +58,7 @@ AEnemy::AEnemy()
 	LeftFootCollisionBox->SetupAttachment(RootComponent);
 	LeftFootCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	LeftFootCollisionBox->SetNotifyRigidBodyCollision(false);
-	LeftFootCollisionBox->SetRelativeScale3D(FVector(0.01));
+	LeftFootCollisionBox->SetRelativeScale3D(FVector(0.1875));
 	// 인게임에서 충돌 박스 보이게 하기
 	LeftFootCollisionBox->SetHiddenInGame(false);
 
@@ -67,7 +67,7 @@ AEnemy::AEnemy()
 	RightFootCollisionBox->SetupAttachment(RootComponent);
 	RightFootCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	RightFootCollisionBox->SetNotifyRigidBodyCollision(false);
-	RightFootCollisionBox->SetRelativeScale3D(FVector(0.01));
+	RightFootCollisionBox->SetRelativeScale3D(FVector(0.1875));
 	// 인게임에서 충돌 박스 보이게 하기
 	RightFootCollisionBox->SetHiddenInGame(false);
 
@@ -116,6 +116,12 @@ void AEnemy::AttackStart()
 
 	RightFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Enabled);
 	RightFistCollisionBox->SetNotifyRigidBodyCollision(true);
+
+	LeftFootCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Enabled);
+	LeftFootCollisionBox->SetNotifyRigidBodyCollision(true);
+
+	RightFootCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Enabled);
+	RightFootCollisionBox->SetNotifyRigidBodyCollision(true);
 }
 void AEnemy::AttackEnd()
 {
@@ -124,5 +130,11 @@ void AEnemy::AttackEnd()
 
 	RightFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	RightFistCollisionBox->SetNotifyRigidBodyCollision(false);
+
+	LeftFootCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
+	LeftFootCollisionBox->SetNotifyRigidBodyCollision(false);
+
+	RightFootCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
+	RightFootCollisionBox->SetNotifyRigidBodyCollision(false);
 }
 

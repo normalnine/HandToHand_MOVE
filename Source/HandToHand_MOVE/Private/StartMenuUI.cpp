@@ -19,7 +19,7 @@ void UStartMenuUI::NativeConstruct()
 
 void UStartMenuUI::Start()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("KDH_ThirdPersonMap"));
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("DemoMap1"));
 }
 void UStartMenuUI::Quit()
 {

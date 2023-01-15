@@ -23,5 +23,5 @@ void UNextLevelUI::NextLevel()
 	{
 		hthGameInstance->stageLevel++;
 	}
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("KDH_ThirdPersonMap"));
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("DemoMap1"));
 }

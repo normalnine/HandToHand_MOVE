@@ -221,7 +221,7 @@ void UEnemyFSM::DamageState()
 	if (currentTime > damageDelayTime)
 	{
 		// 3. 대기 상태로 전환하고 싶다.
-		mState = EEnemyState::Attack;
+		mState = EEnemyState::Idle;
 
 		// 경과 시간 초기화
 		currentTime = 0;
@@ -270,6 +270,8 @@ void UEnemyFSM::DieState()
 //피격 알림 이벤트 함수
 void UEnemyFSM::OnDamageProcess()
 {
+	if (hp < 0) return;
+
 	// 체력 감소
 	hp--;	
 
