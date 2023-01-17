@@ -25,6 +25,9 @@ public:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 		class UButton* btnQuit;
 
+	UPROPERTY()
+	class UHTH_GameInstance* hthGameInstance;
+
 public:
 	UFUNCTION()
 		void Retry();

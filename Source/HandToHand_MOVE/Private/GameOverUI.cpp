@@ -4,6 +4,8 @@
 #include "GameOverUI.h"
 #include <Kismet/GameplayStatics.h>
 #include <Components/Button.h>
+#include <Kismet/KismetSystemLibrary.h>
+#include "HTH_GameInstance.h"
 
 void UGameOverUI::NativeConstruct()
 {
@@ -14,12 +16,19 @@ void UGameOverUI::NativeConstruct()
 
 	//btnQuit 클릭 시 Quit 함수 연결
 	btnQuit->OnClicked.AddDynamic(this, &UGameOverUI::Quit);
+
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 
 void UGameOverUI::Retry()
 {
 	//레벨을 다시 로드한다.
-	UGameplayStatics::OpenLevel(GetWorld(), "StootingMap");
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("DemoMap1"));
+	hthGameInstance = Cast<UHTH_GameInstance>(GetWorld()->GetGameInstance());
+	if (hthGameInstance != nullptr)
+	{
+		hthGameInstance->stageLevel = 1;
+	}
 }
 void UGameOverUI::Quit()
 {

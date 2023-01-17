@@ -70,7 +70,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class AEnemyManager* enemyManager;
-
+	UFUNCTION(BlueprintCallable)
 	void AttackStart();
+	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
 };

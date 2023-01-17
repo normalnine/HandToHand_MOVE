@@ -13,6 +13,7 @@
 #include <GameFramework/CharacterMovementComponent.h>
 #include "EnemyManager.h"
 #include "HandToHand_MOVEGameMode.h"
+#include <Components/PrimitiveComponent.h>
 // Sets default values for this component's properties
 UEnemyFSM::UEnemyFSM()
 {
@@ -80,6 +81,8 @@ void UEnemyFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 // 대기 상태
 void UEnemyFSM::IdleState() 
 {	
+	me->AttackEnd();
+
 	// 1. 시간이 흘렀으니깐
 	currentTime += GetWorld()->DeltaTimeSeconds;
 
@@ -103,6 +106,8 @@ void UEnemyFSM::IdleState()
 // 이동 상태
 void UEnemyFSM::MoveState() 
 {
+	me->AttackEnd();
+	
 	// 1. 타깃 목적지가 필요하다.
 	FVector destination = target->GetActorLocation();
 
@@ -171,7 +176,9 @@ void UEnemyFSM::MoveState()
 
 // 공격 상태
 void UEnemyFSM::AttackState() 
-{
+{	
+	me->AttackEnd();
+	
 	// 목표 : 일정 시간에 한 번씩 공격하고 싶다.
 	// 1. 시간이 흘러야 한다.
 	currentTime += GetWorld()->DeltaTimeSeconds;
@@ -184,7 +191,6 @@ void UEnemyFSM::AttackState()
 
 		// 경과 시간 초기화
 		currentTime = 0;
-		me->AttackStart();
 		ChoiceAttack();			
 	}
 
@@ -197,8 +203,6 @@ void UEnemyFSM::AttackState()
 	{
 		// 길 찾기 기능 정지
 		ai->StopMovement();
-		// 충돌 비활성화
-		me->AttackEnd();
 
 		// 3. 상태를 이동으로 전환하고 싶다.
 		mState = EEnemyState::Move;
@@ -214,6 +218,8 @@ void UEnemyFSM::AttackState()
 // 피격 상태
 void UEnemyFSM::DamageState() 
 {
+	me->AttackEnd();
+
 	// 1. 시간이 흘렀으니까
 	currentTime += GetWorld()->DeltaTimeSeconds;
 	
@@ -235,6 +241,7 @@ void UEnemyFSM::DamageState()
 
 void UEnemyFSM::DieState() 
 {	
+	me->AttackEnd();
 	// 아직 줌은 애니메이션이 끝나지 않았다면
 	// 바닥 내려가지 않도록 처리
 	if (anim->bDieDone == false)
@@ -268,8 +275,9 @@ void UEnemyFSM::DieState()
 }
 
 //피격 알림 이벤트 함수
-void UEnemyFSM::OnDamageProcess()
+void UEnemyFSM::OnDamageProcess(UPrimitiveComponent* OverlappedComp)
 {
+	
 	if (hp < 0) return;
 
 	// 체력 감소
@@ -289,9 +297,21 @@ void UEnemyFSM::OnDamageProcess()
 		currentTime = 0;
 
 		// 피격 애니메이션 재생
-		int32 index = FMath::RandRange(0, 1);
-		FString sectionName = FString::Printf(TEXT("Damage%d"), 0);
-		anim->PlayDamageAnim(FName(*sectionName));
+
+		if (OverlappedComp->GetName().Contains(TEXT("hand"))) 
+		{
+			FString sectionName = FString::Printf(TEXT("Damage%d"), 0);
+			anim->PlayDamageAnim(FName(*sectionName));
+
+		}
+		if (OverlappedComp->GetName().Contains(TEXT("foot")))
+		{
+			FString sectionName = FString::Printf(TEXT("Damage%d"), 1);
+			anim->PlayDamageAnim(FName(*sectionName));
+		}
+// 		int32 index = FMath::RandRange(0, 1);
+// 		FString sectionName = FString::Printf(TEXT("Damage%d"), index);
+// 		anim->PlayDamageAnim(FName(*sectionName));
 
 		ai->StopMovement();
 	}

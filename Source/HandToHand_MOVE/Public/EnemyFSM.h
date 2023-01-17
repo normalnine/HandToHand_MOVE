@@ -14,7 +14,7 @@ enum class EEnemyState : uint8
 	Run,
 	Attack,
 	Damage,
-	Die,	
+	Die,
 };
 
 
@@ -57,7 +57,7 @@ public:
 
 	// 대기 시간
 	UPROPERTY(EditDefaultsOnly, Category = FSM)
-	float idleDelayTime = 1;
+	float idleDelayTime = 1.0f;
 
 	// 경과 시간
 	float currentTime = 0;
@@ -72,7 +72,7 @@ public:
 
 	// 공격 범위
 	UPROPERTY(EditAnywhere, Category=FSM)
-	float attackRange = 100.0f;
+	float attackRange = 150.0f;
 
 	// 공격 대기 시간 
 	UPROPERTY(EditAnywhere, Category = FSM)
@@ -80,15 +80,15 @@ public:
 
 	// 피격 알림 이벤트 함수
 	UFUNCTION(BlueprintCallable)
-	void OnDamageProcess();
+	void OnDamageProcess(UPrimitiveComponent* OverlappedComp);
 
 	// 체력
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=FSM)
-	int32 hp = 3;
+	int32 hp = 5;
 
 	// 피격 대기 시간
 	UPROPERTY(EditAnywhere, Category=FSM)
-	float damageDelayTime = 3.0f;
+	float damageDelayTime = 1.5f;
 
 	// 아래로 사라지는 속도
 	UPROPERTY(EditAnywhere, Category=FSM)

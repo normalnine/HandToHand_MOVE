@@ -5,10 +5,13 @@
 #include "EnemyFSM.h"
 #include "Enemy.h"
 
-void UEnemyAnim::OnEndAttackAnimation()
+void UEnemyAnim::OnStartAttackAnimation()
 {
 	bAttackPlay = false;
 	bAttackPlay1 = false;
 	bAttackPlay2 = false;
 }
+
+
+
 	
