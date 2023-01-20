@@ -55,6 +55,9 @@ public:
 	
 	FActorSpawnParameters spawParam;
 
+	UPROPERTY()
+	float enemyNumFactory;
+
 	// 적 생성 함수
 	UFUNCTION()
 	void CreateEnemy();

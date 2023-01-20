@@ -88,7 +88,7 @@ public:
 
 	// 피격 대기 시간
 	UPROPERTY(EditAnywhere, Category=FSM)
-	float damageDelayTime = 1.5f;
+	float damageDelayTime = 1.0f;
 
 	// 아래로 사라지는 속도
 	UPROPERTY(EditAnywhere, Category=FSM)

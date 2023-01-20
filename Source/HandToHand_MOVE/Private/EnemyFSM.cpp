@@ -257,7 +257,7 @@ void UEnemyFSM::DieState()
 	me->SetActorLocation(P);	
 
 	// 1. 만약 2미터 이상 내려왔다면
-	if (P.Z < -100.0f)
+	if (P.Z < -10.0f)
 	{
 		// 총 에너미에서 죽을 때마다 카운트
 		currGameMode->allEnemyNum--;
@@ -300,14 +300,15 @@ void UEnemyFSM::OnDamageProcess(UPrimitiveComponent* OverlappedComp)
 
 		if (OverlappedComp->GetName().Contains(TEXT("hand"))) 
 		{
-			FString sectionName = FString::Printf(TEXT("Damage%d"), 0);
+			FString sectionName = FString::Printf(TEXT("Damage0"));
 			anim->PlayDamageAnim(FName(*sectionName));
 
 		}
 		if (OverlappedComp->GetName().Contains(TEXT("foot")))
 		{
-			FString sectionName = FString::Printf(TEXT("Damage%d"), 1);
+			FString sectionName = FString::Printf(TEXT("Damage1"));
 			anim->PlayDamageAnim(FName(*sectionName));
+			me->SetActorLocation(me->GetActorLocation()+FVector(0,0,50));
 		}
 // 		int32 index = FMath::RandRange(0, 1);
 // 		FString sectionName = FString::Printf(TEXT("Damage%d"), index);

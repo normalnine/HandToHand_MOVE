@@ -38,6 +38,8 @@ void AEnemyManager::BeginPlay()
 	// 스폰 위치 동적 할당
 	FindSpawnPoints();
 
+	enemyNumFactory = currGameMode->allEnemyNum;
+
 	// 1. 랜덤 생성 시간 구하기
 	float createTime = FMath::RandRange(minTime, maxTime);
 
@@ -64,10 +66,10 @@ void AEnemyManager::CreateEnemy()
 
 	// 적 생성된 수 카운트 하기
 	enemySpawnCounter++;
-	UE_LOG(LogTemp,Warning,TEXT("%d 번째 적 생성"), enemySpawnCounter);
+	UE_LOG(LogTemp,Warning,TEXT("%d beonjje"), enemySpawnCounter);
 
 	// 적을 다 생성했으면 그만 생성하기
-	if (enemySpawnCounter >= currGameMode->allEnemyNum) return;
+	if (enemySpawnCounter >= enemyNumFactory) return;
 
 	// 다시 랜덤 시간에 CreateEnemy 함수가 호출되도록 타이머 설정
 	float createTime = FMath::RandRange(minTime, maxTime);
