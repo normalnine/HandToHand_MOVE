@@ -36,9 +36,11 @@ AEnemy::AEnemy()
 	// AIController 부터 Process 될 수 있도록 설정
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
+	
+
 	// 왼쪽 주먹 충돌 박스 생성
 	LeftFistCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("LeftFistCollisionBox"));
-	LeftFistCollisionBox->SetupAttachment(RootComponent);
+	LeftFistCollisionBox->SetupAttachment(GetMesh(), TEXT("fist_l_collision"));
 	LeftFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	LeftFistCollisionBox->SetNotifyRigidBodyCollision(false);
 	LeftFistCollisionBox->SetRelativeScale3D(FVector(0.2));
@@ -47,7 +49,7 @@ AEnemy::AEnemy()
 
 	// 오른쪽 주먹 충돌 박스 생성
 	RightFistCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RightFistCollisionBox"));
-	RightFistCollisionBox->SetupAttachment(RootComponent);
+	RightFistCollisionBox->SetupAttachment(GetMesh(), TEXT("fist_r_collision"));
 	RightFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	RightFistCollisionBox->SetNotifyRigidBodyCollision(false);
 	RightFistCollisionBox->SetRelativeScale3D(FVector(0.2));
@@ -56,7 +58,7 @@ AEnemy::AEnemy()
 
 	// 왼쪽 발 충돌 박스 생성
 	LeftFootCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("LeftFootCollisionBox"));
-	LeftFootCollisionBox->SetupAttachment(RootComponent);
+	LeftFootCollisionBox->SetupAttachment(GetMesh(), TEXT("LeftFootSocket"));
 	LeftFootCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	LeftFootCollisionBox->SetNotifyRigidBodyCollision(false);
 	LeftFootCollisionBox->SetRelativeScale3D(FVector(0.1875));
@@ -65,7 +67,7 @@ AEnemy::AEnemy()
 
 	// 오른쪽 발 충돌 박스 생성
 	RightFootCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RightFootCollisionBox"));
-	RightFootCollisionBox->SetupAttachment(RootComponent);
+	RightFootCollisionBox->SetupAttachment(GetMesh(), TEXT("RightFootSocket"));
 	RightFootCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	RightFootCollisionBox->SetNotifyRigidBodyCollision(false);
 	RightFootCollisionBox->SetRelativeScale3D(FVector(0.1875));
@@ -104,10 +106,10 @@ void AEnemy::BeginPlay()
 
 	const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false);
 
-	LeftFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_l_collision");
+	/*LeftFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_l_collision");
 	RightFistCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "fist_r_collision");
 	LeftFootCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "LeftFootSocket");
-	RightFootCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "RightFootSocket");
+	RightFootCollisionBox->AttachToComponent(GetMesh(), AttachmentRules, "RightFootSocket");*/
 
 	AActor* eM = UGameplayStatics::GetActorOfClass(GetWorld(), AEnemyManager::StaticClass());
 	enemyManager = Cast<AEnemyManager>(eM);
