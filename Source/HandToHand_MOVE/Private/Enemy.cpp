@@ -43,7 +43,7 @@ AEnemy::AEnemy()
 	LeftFistCollisionBox->SetNotifyRigidBodyCollision(false);
 	LeftFistCollisionBox->SetRelativeScale3D(FVector(0.2));
 	// 인게임에서 충돌 박스 보이게 하기
-	LeftFistCollisionBox->SetHiddenInGame(false);
+	LeftFistCollisionBox->SetHiddenInGame(true);
 
 	// 오른쪽 주먹 충돌 박스 생성
 	RightFistCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RightFistCollisionBox"));
@@ -52,7 +52,7 @@ AEnemy::AEnemy()
 	RightFistCollisionBox->SetNotifyRigidBodyCollision(false);
 	RightFistCollisionBox->SetRelativeScale3D(FVector(0.2));
 	// 인게임에서 충돌 박스 보이게 하기
-	RightFistCollisionBox->SetHiddenInGame(false);
+	RightFistCollisionBox->SetHiddenInGame(true);
 
 	// 왼쪽 발 충돌 박스 생성
 	LeftFootCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("LeftFootCollisionBox"));
@@ -61,7 +61,7 @@ AEnemy::AEnemy()
 	LeftFootCollisionBox->SetNotifyRigidBodyCollision(false);
 	LeftFootCollisionBox->SetRelativeScale3D(FVector(0.1875));
 	// 인게임에서 충돌 박스 보이게 하기
-	LeftFootCollisionBox->SetHiddenInGame(false);
+	LeftFootCollisionBox->SetHiddenInGame(true);
 
 	// 오른쪽 발 충돌 박스 생성
 	RightFootCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RightFootCollisionBox"));
@@ -70,15 +70,15 @@ AEnemy::AEnemy()
 	RightFootCollisionBox->SetNotifyRigidBodyCollision(false);
 	RightFootCollisionBox->SetRelativeScale3D(FVector(0.1875));
 	// 인게임에서 충돌 박스 보이게 하기
-	RightFootCollisionBox->SetHiddenInGame(false);
+	RightFootCollisionBox->SetHiddenInGame(true);
 
-	static ConstructorHelpers::FObjectFinder<USoundBase> tempHitSound(TEXT("SoundWave'/Game/KDH/Enemy/Sound/fist-punch-or-kick-7171.fist-punch-or-kick-7171'"));
+	ConstructorHelpers::FObjectFinder<USoundBase> tempHitSound(TEXT("SoundWave'/Game/KDH/Enemy/Sound/fist-punch-or-kick-7171.fist-punch-or-kick-7171'"));
 	if (tempHitSound.Succeeded())
 	{
 		hitSound = tempHitSound.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundBase> tempDeathSound(TEXT("SoundWave'/Game/KDH/Enemy/Sound/death-49098.death-49098'"));
+	ConstructorHelpers::FObjectFinder<USoundBase> tempDeathSound(TEXT("SoundWave'/Game/KDH/Enemy/Sound/death-49098.death-49098'"));
 	if (tempDeathSound.Succeeded())
 	{
 		deathSound = tempDeathSound.Object;
