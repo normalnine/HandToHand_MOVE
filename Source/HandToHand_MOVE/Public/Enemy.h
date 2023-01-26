@@ -70,6 +70,19 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class AEnemyManager* enemyManager;
+
+	UPROPERTY()
+	class USoundBase* hitSound;
+
+	UPROPERTY()
+	class USoundBase* deathSound;
+
+	UPROPERTY()
+	TSubclassOf <class AActor> bloodFactory;
+
+	UPROPERTY()
+	class AActor* blood;
+
 	UFUNCTION(BlueprintCallable)
 	void AttackStart();
 	UFUNCTION(BlueprintCallable)

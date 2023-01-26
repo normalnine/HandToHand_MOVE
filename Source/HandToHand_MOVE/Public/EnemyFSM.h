@@ -109,6 +109,8 @@ public:
 	UPROPERTY()
 	class AHandToHand_MOVEGameMode* currGameMode;
 
+	
+
 	// 길 찾기 수행시 랜덤 위치
 	FVector randomPos;
 

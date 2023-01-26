@@ -8,6 +8,7 @@
 #include <Components/BoxComponent.h>
 #include <Kismet/GameplayStatics.h>
 #include "EnemyManager.h"
+#include <Sound/SoundBase.h>
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -40,7 +41,7 @@ AEnemy::AEnemy()
 	LeftFistCollisionBox->SetupAttachment(RootComponent);
 	LeftFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	LeftFistCollisionBox->SetNotifyRigidBodyCollision(false);
-	LeftFistCollisionBox->SetRelativeScale3D(FVector(0.1875));
+	LeftFistCollisionBox->SetRelativeScale3D(FVector(0.2));
 	// 인게임에서 충돌 박스 보이게 하기
 	LeftFistCollisionBox->SetHiddenInGame(false);
 
@@ -49,7 +50,7 @@ AEnemy::AEnemy()
 	RightFistCollisionBox->SetupAttachment(RootComponent);
 	RightFistCollisionBox->SetCollisionProfileName(MeleeCollisionProfile.Disabled);
 	RightFistCollisionBox->SetNotifyRigidBodyCollision(false);
-	RightFistCollisionBox->SetRelativeScale3D(FVector(0.1875));
+	RightFistCollisionBox->SetRelativeScale3D(FVector(0.2));
 	// 인게임에서 충돌 박스 보이게 하기
 	RightFistCollisionBox->SetHiddenInGame(false);
 
@@ -71,7 +72,23 @@ AEnemy::AEnemy()
 	// 인게임에서 충돌 박스 보이게 하기
 	RightFootCollisionBox->SetHiddenInGame(false);
 
-	
+	static ConstructorHelpers::FObjectFinder<USoundBase> tempHitSound(TEXT("SoundWave'/Game/KDH/Enemy/Sound/fist-punch-or-kick-7171.fist-punch-or-kick-7171'"));
+	if (tempHitSound.Succeeded())
+	{
+		hitSound = tempHitSound.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<USoundBase> tempDeathSound(TEXT("SoundWave'/Game/KDH/Enemy/Sound/death-49098.death-49098'"));
+	if (tempDeathSound.Succeeded())
+	{
+		deathSound = tempDeathSound.Object;
+	}
+
+	ConstructorHelpers::FClassFinder<AActor> tempBlood(TEXT("Blueprint'/Game/KDH/Enemy/Effect/BP_Blood_Drops.BP_Blood_Drops_C'"));
+	if (tempBlood.Succeeded())
+	{
+		bloodFactory = tempBlood.Class;
+	}
 }
 
 // Called when the game starts or when spawned
