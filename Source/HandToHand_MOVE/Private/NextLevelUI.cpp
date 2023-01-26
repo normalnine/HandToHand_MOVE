@@ -6,6 +6,9 @@
 #include <Components/Button.h>
 #include "HTH_GameInstance.h"
 #include <Engine/GameInstance.h>
+#include <Sound/SoundBase.h>
+
+
 
 void UNextLevelUI::NativeConstruct()
 {
@@ -13,7 +16,6 @@ void UNextLevelUI::NativeConstruct()
 
 	//btnRetry 클릭 시 Retry 함수 연결
 	btnNext->OnClicked.AddDynamic(this, &UNextLevelUI::NextLevel);
-
 }
 
 void UNextLevelUI::NextLevel()

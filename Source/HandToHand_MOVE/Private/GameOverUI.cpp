@@ -18,6 +18,8 @@ void UGameOverUI::NativeConstruct()
 	btnQuit->OnClicked.AddDynamic(this, &UGameOverUI::Quit);
 
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
 }
 
 void UGameOverUI::Retry()

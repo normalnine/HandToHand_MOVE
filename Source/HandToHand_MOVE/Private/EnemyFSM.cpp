@@ -178,7 +178,6 @@ void UEnemyFSM::MoveState()
 void UEnemyFSM::AttackState() 
 {	
 	me->AttackEnd();
-	
 	// 목표 : 일정 시간에 한 번씩 공격하고 싶다.
 	// 1. 시간이 흘러야 한다.
 	currentTime += GetWorld()->DeltaTimeSeconds;
@@ -203,7 +202,7 @@ void UEnemyFSM::AttackState()
 	{
 		// 길 찾기 기능 정지
 		ai->StopMovement();
-
+		
 		// 3. 상태를 이동으로 전환하고 싶다.
 		mState = EEnemyState::Move;
 		
@@ -281,7 +280,9 @@ void UEnemyFSM::OnDamageProcess(UPrimitiveComponent* OverlappedComp)
 	if (hp < 0) return;
 
 	// 체력 감소
-	hp--;	
+	hp--;
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(),me->hitSound,OverlappedComp->GetOwner()->GetActorLocation());
+	AActor* blood = GetWorld()->SpawnActor<AActor>(me->bloodFactory, me->GetActorLocation(), me->GetActorRotation());
 
 	FVector P0 = target->GetActorLocation();
 	FVector vt = target->GetActorForwardVector() * knockBackSpeed;
