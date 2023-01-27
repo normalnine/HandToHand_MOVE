@@ -256,7 +256,7 @@ void UEnemyFSM::DieState()
 	me->SetActorLocation(P);	
 
 	// 1. 만약 2미터 이상 내려왔다면
-	if (P.Z < -10.0f)
+	if (P.Z < 0)
 	{
 		// 총 에너미에서 죽을 때마다 카운트
 		currGameMode->allEnemyNum--;
@@ -264,7 +264,17 @@ void UEnemyFSM::DieState()
 
 		if (currGameMode->allEnemyNum == 0)
 		{
-			currGameMode->ShowNextLevel();
+			FTimerHandle GravityTimerHandle;
+			float GravityTime = 3;
+
+			GetWorld()->GetTimerManager().SetTimer(GravityTimerHandle, FTimerDelegate::CreateLambda([&]()
+				{
+					// 코드 구현
+					currGameMode->ShowNextLevel();
+					// TimerHandle 초기화
+					GetWorld()->GetTimerManager().ClearTimer(GravityTimerHandle);
+				}), GravityTime, false);	// 반복하려면 false를 true로 변경
+			
 			
 		}
 
